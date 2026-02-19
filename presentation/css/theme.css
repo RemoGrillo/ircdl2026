@@ -345,3 +345,45 @@
 .reveal .controls {
   color: var(--accent);
 }
+
+/* ===== DARK THEME ===== */
+[data-theme="dark"] {
+  --bg-primary: #0f0f0f;
+  --bg-slide: #141414;
+  --bg-card: rgba(30, 30, 35, 0.85);
+  --border-subtle: rgba(200, 200, 200, 0.1);
+  --blue: #5ba3d9;
+  --amber: #e09f3e;
+  --green: #6bcb77;
+  --red: #e74c3c;
+  --text-primary: #f0ede8;
+  --text-secondary: #d4d0c8;
+  --text-muted: #9ca3af;
+  --text-dim: #6b7280;
+  --accent: #e07a5f;
+  --accent-light: rgba(224, 122, 95, 0.1);
+}
+
+[data-theme="dark"] .reveal .slide-background {
+  background: var(--bg-slide) !important;
+}
+
+[data-theme="dark"] .reveal {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .tag.blue  { background: rgba(91,163,217,0.12); color: var(--blue); border-color: rgba(91,163,217,0.25); }
+[data-theme="dark"] .tag.amber { background: rgba(224,159,62,0.1); color: var(--amber); border-color: rgba(224,159,62,0.25); }
+[data-theme="dark"] .tag.green { background: rgba(107,203,119,0.1); color: var(--green); border-color: rgba(107,203,119,0.25); }
+
+[data-theme="dark"] .card.red-border { border-color: rgba(231, 76, 60, 0.3); }
+[data-theme="dark"] .card.green-border { border-color: rgba(107, 203, 119, 0.3); }
+[data-theme="dark"] .card.amber-border { border-color: rgba(224, 159, 62, 0.3); }
+
+[data-theme="dark"] .tree-demo .node.active { background: rgba(91,163,217,0.12); color: var(--blue); }
+[data-theme="dark"] .tree-demo .node.hl { background: rgba(224,122,95,0.12); color: var(--accent); }
+
+[data-theme="dark"] img {
+  border-color: rgba(200,200,200,0.08) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important;
+}
