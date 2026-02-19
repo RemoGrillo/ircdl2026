@@ -1,0 +1,47 @@
+<section>
+  <h3>Limitation</h3>
+  <h2>The Standard Semantic Tree Problem</h2>
+
+  <div class="cols">
+    <div>
+      <div class="card">
+        <h4>⚙️ How It Works</h4>
+        <p>Single SPARQL query retrieves the <strong class="red">entire</strong> relationship graph at initialization — synchronous, monolithic loading</p>
+      </div>
+
+      <div style="margin-top:16px;">
+        <p class="dim" style="font-size:0.75em;margin-bottom:6px;">Works for:</p>
+        <div class="flow">
+          <div class="flow-item green-border" style="border-color:rgba(16,185,129,0.3);"><span class="green">✓</span> Small datasets</div>
+          <div class="flow-item green-border" style="border-color:rgba(16,185,129,0.3);"><span class="green">✓</span> Few hundred nodes</div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;">
+        <p class="dim" style="font-size:0.75em;margin-bottom:6px;">Fails for:</p>
+        <div class="flow">
+          <div class="flow-item" style="border-color:rgba(239,68,68,0.3);"><span class="red">✗</span> 6M triples</div>
+          <div class="flow-item" style="border-color:rgba(239,68,68,0.3);"><span class="red">✗</span> 18 levels deep</div>
+          <div class="flow-item" style="border-color:rgba(239,68,68,0.3);"><span class="red">✗</span> 1000s of entities</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card red-border">
+        <h4 style="color:var(--red);">⚠️ Critical Issues at Scale</h4>
+        <p>Prohibitive initial loading times</p>
+        <p>Memory consumption exceeds thresholds</p>
+        <p>System responsiveness deteriorates</p>
+        <p style="margin-top:8px;"><strong class="red">Navigation is strictly vertical</strong> — no horizontal semantic exploration</p>
+      </div>
+
+      <div class="highlight-box" style="margin-top:14px;">
+        <strong class="accent">Key insight:</strong> We need a fundamentally different architecture — not just optimization, but a paradigm shift in how data is loaded and navigated
+      </div>
+    </div>
+  </div>
+
+  <aside class="notes">
+    Within ResearchSpace, the standard Semantic Tree module is the predefined tool for representing hierarchical relationships among RDF entities. It uses a synchronous, monolithic approach: a single initial query retrieves the ENTIRE relationship graph at once. For small datasets this works fine. But for the Evangelisti archive, with 18 hierarchical levels and thousands of entities across 6 million triples, this strategy proved computationally untenable. Initial loading times became prohibitive, memory consumption exceeded reasonable thresholds, and responsiveness deteriorated. Moreover, navigation is strictly vertical—you can only go up and down the hierarchy, but you cannot explore the horizontal semantic connections that make archival materials rich and interesting.
+  </aside>
+</section>

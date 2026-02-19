@@ -1,0 +1,40 @@
+<section>
+  <h3>Navigation Feature</h3>
+  <h2>Contextual Search</h2>
+
+  <div class="cols">
+    <div>
+      <div class="card red-border" style="margin-bottom:14px;">
+        <h4 style="color:var(--red);">❌ Traditional Search</h4>
+        <p>Returns flat result lists — <strong>no structural context</strong><br>User must mentally reconstruct archival relationships</p>
+      </div>
+      <div class="card green-border">
+        <h4 style="color:var(--green);">✓ Our Contextual Search</h4>
+        <p>Filters &amp; reorganizes the <strong>hierarchy itself</strong><br>Results shown within their archival position — the tree is "pruned" to focus on matches</p>
+      </div>
+
+      <div class="highlight-box" style="margin-top:14px;">
+        Users immediately see whether a match is an isolated document or part of a larger documentary cluster
+      </div>
+    </div>
+    <div>
+      <p class="dim" style="font-size:0.75em;margin-bottom:8px;">How it works:</p>
+
+      <div class="v-flow">
+        <div class="flow-item">🔍 User enters search term</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">⚡ SPARQL identifies matching nodes</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">🌳 Retrieves full path: root → each match</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item" style="border-color:rgba(245,158,11,0.3);">✨ Tree rebuilt with only relevant branches</div>
+      </div>
+
+      <p class="small" style="margin-top:10px;">+ Reversible filters · Dynamic sorting · Query-level exclusion</p>
+    </div>
+  </div>
+
+  <aside class="notes">
+    A key feature is integrated contextual search. Unlike traditional search systems which return flat result lists, our search filters and reorganizes the hierarchy itself. When a user enters a term, the system constructs a SPARQL query identifying matching nodes, retrieves the complete path from root to each match, and reconstructs the tree showing only relevant branches while preserving structural context. This is crucial for archival work: users can simultaneously identify relevant materials and understand their provenance and position within the collection. They can immediately see whether a match is an isolated document or part of a larger cluster. We also implemented reversible and combinable filters that work at the query level—excluded nodes are never even retrieved from the database.
+  </aside>
+</section>

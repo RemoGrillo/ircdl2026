@@ -1,0 +1,51 @@
+<section>
+  <h3>Semantic Modeling</h3>
+  <h2>BoDi Ontology &amp; Knowledge Graph</h2>
+
+  <div class="cols">
+    <div>
+      <div class="flow" style="margin-bottom:14px;">
+        <div class="flow-item"><strong class="blue">RiC-O</strong><br><span class="small">Records in Contexts</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item"><strong class="accent">BoDi</strong><br><span class="small">Born-Digital extension</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item"><strong class="green">60M triples</strong><br><span class="small">Knowledge Graph</span></div>
+      </div>
+
+      <p style="font-size:0.78em;margin-bottom:10px;">
+        <strong>Pipeline:</strong> file system → structural census + hash computation + native metadata extraction → RDF entities modeled in BoDi
+      </p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0;">
+        <div class="card" style="text-align:center;padding:14px 10px;">
+          <div style="font-size:1.4em;font-weight:700;color:var(--accent);">78,211</div>
+          <div class="small">Files</div>
+        </div>
+        <div class="card" style="text-align:center;padding:14px 10px;">
+          <div style="font-size:1.4em;font-weight:700;color:var(--accent);">11,135</div>
+          <div class="small">Folders</div>
+        </div>
+        <div class="card" style="text-align:center;padding:14px 10px;">
+          <div style="font-size:1.4em;font-weight:700;color:var(--accent);">5.5M+</div>
+          <div class="small">Metadata</div>
+        </div>
+      </div>
+
+      <div style="margin-top:8px;">
+        <span class="tag blue">RDF</span>
+        <span class="tag amber">SPARQL</span>
+        <span class="tag green">OWL</span>
+        <span class="tag blue">RiC-O</span>
+        <span class="tag amber">BoDi</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+      <img src="slides/bodi.png" alt="BoDi Ontology diagram" style="max-width:100%;max-height:480px;border-radius:8px;border:1px solid var(--border-subtle);box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+      <p class="small" style="margin-top:8px;text-align:center;">BoDi — Born Digital Ontology (<em>w3id.org/bodi#</em>)</p>
+    </div>
+  </div>
+
+  <aside class="notes">
+    The semantic modeling uses BoDi, the Born-Digital Archival Description Ontology, which extends RiC-O. The pipeline goes from the raw file system through three stages: structural census to map the hierarchy, hash computation with SHA-256 for integrity, and native metadata extraction using specialized tools. Each step produces RDF entities with full provenance. The resulting knowledge graph contains 60 million triples, representing over 78,000 files, 11,000 folders, and more than 5.5 million metadata entries. Native metadata—both file system metadata like paths and timestamps, and embedded metadata like author, software version, and word count—form a rich contextual layer. This density is what makes the archive semantically powerful, but it's also what makes navigation so challenging.
+  </aside>
+</section>

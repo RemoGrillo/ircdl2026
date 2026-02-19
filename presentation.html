@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Archival Knowledge Graphs – IRCDL 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0a0e1a;color:#e8eaf0;font-family:'Inter',system-ui,sans-serif;overflow:hidden;height:100vh;width:100vw;}
+.deck{position:relative;width:100vw;height:100vh;}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;display:none;flex-direction:column;justify-content:center;padding:60px 80px;opacity:0;transition:opacity 0.45s ease;}
+.slide.active{display:flex;opacity:1;}
+/* Backgrounds */
+.slide{background:linear-gradient(135deg,#0d1224 0%,#131a35 50%,#0f1529 100%);}
+.slide::before{content:'';position:absolute;top:0;right:0;width:45%;height:100%;background:radial-gradient(ellipse at 80% 30%,rgba(59,130,246,0.06) 0%,transparent 70%);pointer-events:none;}
+.slide::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(59,130,246,0.3),rgba(245,158,11,0.3),transparent);}
+/* Typography */
+h1{font-size:2.6em;font-weight:700;line-height:1.15;margin-bottom:20px;background:linear-gradient(135deg,#f8fafc,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+h2{font-size:1.95em;font-weight:600;margin-bottom:28px;color:#f1f5f9;letter-spacing:-0.02em;}
+h3{font-size:1.3em;font-weight:500;color:#f59e0b;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.08em;font-size:0.85em;}
+p,.item{font-size:1.05em;line-height:1.7;color:#cbd5e1;max-width:900px;}
+.subtitle{font-size:1.15em;color:#94a3b8;margin-top:8px;font-weight:300;}
+.accent{color:#f59e0b;}
+.blue{color:#3b82f6;}
+.green{color:#10b981;}
+.highlight{background:linear-gradient(135deg,rgba(59,130,246,0.15),rgba(245,158,11,0.1));border-left:3px solid #f59e0b;padding:16px 24px;border-radius:0 8px 8px 0;margin:16px 0;}
+/* Lists */
+ul{list-style:none;padding:0;}
+ul li{padding:8px 0 8px 28px;position:relative;font-size:1.05em;color:#cbd5e1;line-height:1.6;}
+ul li::before{content:'';position:absolute;left:0;top:16px;width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#f59e0b);}
+/* Two columns */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start;}
+.col{}
+/* Cards */
+.card{background:rgba(30,41,72,0.6);border:1px solid rgba(59,130,246,0.15);border-radius:12px;padding:24px;margin:10px 0;backdrop-filter:blur(8px);}
+.card h4{font-size:1em;font-weight:600;color:#f59e0b;margin-bottom:8px;}
+.card p{font-size:0.92em;color:#94a3b8;line-height:1.6;}
+/* Metrics */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin:20px 0;}
+.metric{text-align:center;padding:20px 12px;background:rgba(30,41,72,0.5);border:1px solid rgba(59,130,246,0.12);border-radius:10px;}
+.metric .num{font-size:2em;font-weight:700;background:linear-gradient(135deg,#3b82f6,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.metric .label{font-size:0.78em;color:#94a3b8;margin-top:4px;text-transform:uppercase;letter-spacing:0.05em;}
+/* Title slide special */
+.slide.title-slide{justify-content:center;align-items:center;text-align:center;}
+.slide.title-slide h1{font-size:2.8em;}
+.slide.title-slide .authors{margin-top:24px;font-size:1.05em;color:#94a3b8;}
+.slide.title-slide .conf{margin-top:12px;font-size:0.85em;color:#64748b;letter-spacing:0.06em;text-transform:uppercase;}
+.slide.title-slide .institution{margin-top:8px;font-size:0.9em;color:#64748b;}
+/* End slide */
+.slide.end-slide{justify-content:center;align-items:center;text-align:center;}
+/* Diagram */
+.tree-demo{display:flex;flex-direction:column;gap:4px;font-family:'JetBrains Mono',monospace;font-size:0.85em;color:#94a3b8;}
+.tree-demo .node{padding:3px 10px;border-radius:4px;}
+.tree-demo .node.active{background:rgba(59,130,246,0.2);color:#3b82f6;}
+.tree-demo .node.highlight-node{background:rgba(245,158,11,0.15);color:#f59e0b;}
+/* Navigation */
+.nav{position:fixed;bottom:20px;right:30px;display:flex;align-items:center;gap:16px;z-index:100;}
+.nav .counter{font-size:0.8em;color:#475569;font-family:'JetBrains Mono',monospace;}
+.nav button{background:rgba(30,41,72,0.7);border:1px solid rgba(59,130,246,0.2);color:#94a3b8;width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:1em;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.nav button:hover{background:rgba(59,130,246,0.2);color:#f1f5f9;}
+/* Progress bar */
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#3b82f6,#f59e0b);transition:width 0.4s ease;z-index:100;}
+/* Notes panel */
+.notes-panel{position:fixed;bottom:0;left:0;width:100%;background:rgba(10,14,26,0.95);border-top:1px solid rgba(59,130,246,0.2);padding:16px 30px;font-size:0.85em;color:#94a3b8;line-height:1.6;max-height:180px;overflow-y:auto;transform:translateY(100%);transition:transform 0.3s ease;z-index:99;backdrop-filter:blur(12px);}
+.notes-panel.visible{transform:translateY(0);}
+.notes-panel strong{color:#f59e0b;font-weight:500;}
+.notes-label{font-size:0.7em;text-transform:uppercase;letter-spacing:0.1em;color:#475569;margin-bottom:6px;}
+/* Tag */
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.75em;font-weight:500;margin:3px 4px;letter-spacing:0.03em;}
+.tag.blue{background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.25);}
+.tag.amber{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.25);}
+.tag.green{background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(16,185,129,0.25);}
+/* Icon circles */
+.icon-circle{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4em;margin-bottom:12px;}
+.icon-circle.blue-bg{background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);}
+.icon-circle.amber-bg{background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);}
+/* Big number */
+.big-num{font-size:3.5em;font-weight:700;background:linear-gradient(135deg,#3b82f6,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+/* Vertical line decor */
+.vline{width:3px;height:40px;background:linear-gradient(180deg,#3b82f6,#f59e0b);border-radius:2px;margin-bottom:16px;}
+/* Arrow flow */
+.flow{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:16px 0;}
+.flow-item{background:rgba(30,41,72,0.6);border:1px solid rgba(59,130,246,0.15);border-radius:8px;padding:12px 20px;font-size:0.9em;color:#cbd5e1;}
+.flow-arrow{color:#475569;font-size:1.2em;}
+/* Small text */
+.small{font-size:0.82em;color:#64748b;}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="deck" id="deck">
+
+<!-- SLIDE 1: Title -->
+<div class="slide title-slide active" data-notes="Good morning everyone. My name is Remo Grillo, and I'm presenting joint work with Lucia Giagnolini and Paolo Bonora from the University of Bologna. Our paper addresses a fundamental challenge: how do we make large-scale archival knowledge graphs navigable for users who are not experts in semantic technologies? We propose a solution called the Semantic Tree Advanced, and we tested it on the born-digital archive of Italian writer Valerio Evangelisti.">
+  <div class="vline"></div>
+  <h1>Archival Knowledge Graphs</h1>
+  <p class="subtitle" style="max-width:700px;">Balancing Semantic Richness and Accessibility<br>of Hierarchical Structures</p>
+  <div class="authors">
+    <span class="accent">Remo Grillo</span> · Lucia Giagnolini · Paolo Bonora
+  </div>
+  <div class="institution">Alma Mater Studiorum — Università di Bologna · /DH.ARC</div>
+  <div class="conf">IRCDL 2026 · Modena · February 19–20, 2026</div>
+</div>
+
+<!-- SLIDE 2: The Problem -->
+<div class="slide" data-notes="The Semantic Web and Linked Open Data offer extraordinary capabilities for cultural heritage: we can model rich, typed relationships between entities and interconnect collections across institutions. However, there's a critical tension. The very expressiveness that makes LOD powerful also creates barriers. To fully exploit linked data, users need to understand SPARQL, graph structures, and ontological modeling. But the primary audiences of cultural heritage institutions—historians, scholars, students, the general public—rarely have this expertise. This accessibility gap is especially severe at scale: when you move from small experimental graphs to millions of triples with thousands of interlinked entities, conventional navigation metaphors simply break down. Visualizations become congested, and the semantic richness that should be an asset becomes a barrier.">
+  <h3>The Challenge</h3>
+  <h2>The Accessibility Gap in Linked Open Data</h2>
+  <div class="cols">
+    <div class="col">
+      <div class="card">
+        <h4>🔗 LOD Promise</h4>
+        <p>RDF knowledge graphs enable rich, typed relationships between entities across institutional boundaries</p>
+      </div>
+      <div class="card">
+        <h4>📈 At Scale</h4>
+        <p>Cultural heritage initiatives now operate at <strong style="color:#f59e0b">millions of triples</strong> with deep hierarchical and relational structures</p>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <h4>🚧 The Barrier</h4>
+        <p>Full exploitation requires SPARQL, graph structures, ontology modeling — expertise most users lack</p>
+      </div>
+      <div class="card">
+        <h4>👥 The Users</h4>
+        <p>Historians, literary scholars, students, general public — they need <strong style="color:#3b82f6">intuitive access</strong>, not query languages</p>
+      </div>
+    </div>
+  </div>
+  <div class="highlight" style="margin-top:20px;">
+    <strong style="color:#f59e0b;">Core question:</strong> How do we preserve semantic richness while making navigation accessible at scale?
+  </div>
+</div>
+
+<!-- SLIDE 3: Valerio Evangelisti -->
+<div class="slide" data-notes="Our case study is the archive of Valerio Evangelisti, an Italian writer and political activist who lived from 1952 to 2022. He's internationally known for his historical fiction, particularly the Nicolas Eymerich series. His archive is a fascinating hybrid collection. The most substantial component is born-digital: 389 floppy disks and three hard drives totaling about 2.1 terabytes, spanning from 1995 to 2022. These contain working folders for novels, study materials, email backups from multiple accounts, software and video game collections, and extensive system files. What makes this archive especially complex is its multiple contextual dimensions: materials relate simultaneously to political networks, academic production, literary creation across draft versions, and the technological evolution from floppy disks to modern media. The file system of the main hard drive alone reaches 18 levels of hierarchical depth.">
+  <h3>Case Study</h3>
+  <h2>The Valerio Evangelisti Archive</h2>
+  <div class="cols">
+    <div class="col">
+      <p style="margin-bottom:16px;">Italian writer &amp; activist <span class="accent">(1952–2022)</span><br>Internationally recognized author of historical fiction</p>
+      <div class="card">
+        <h4>📀 Born-Digital Core</h4>
+        <p>389 floppy disks + 3 hard drives ≈ <strong style="color:#f59e0b">2.1 TB</strong><br>
+        Spanning 1995–2022: novel drafts, emails, software, system files</p>
+      </div>
+      <div class="card">
+        <h4>📄 Analog Materials</h4>
+        <p>Documents, photo albums, notebooks, Super 8 reels (Marco Pezzi Archive) + ~6,000 volumes (Unibo library)</p>
+      </div>
+    </div>
+    <div class="col">
+      <p style="font-size:0.9em;color:#64748b;margin-bottom:12px;">Multiple contextual dimensions:</p>
+      <ul>
+        <li>Political networks &amp; activism</li>
+        <li>Academic &amp; historical production</li>
+        <li>Literary creation across draft versions</li>
+        <li>Technological evolution (floppy → HDD → modern media)</li>
+        <li>File system depth up to <span class="accent">18 hierarchical levels</span></li>
+      </ul>
+      <div class="highlight" style="margin-top:16px;">
+        <strong style="color:#f59e0b;">Complexity beyond volume:</strong> items participate in chronological, thematic, and production workflows simultaneously
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4: BoDi / RiC-O Ontology -->
+<div class="slide" data-notes="To represent this complex born-digital archive semantically, the modeling was done using BoDi—the Born-Digital Archival Description Ontology—which extends Records in Contexts Ontology, or RiC-O. RiC-O is the archival standard developed by the International Council on Archives. BoDi extends it specifically for born-digital materials, addressing the unique requirements of digital archives. The resulting knowledge graph exceeds 6 million RDF triples. The ontology must capture several key aspects: the representation of digital materials in their physical, logical, and content-based components; documentation of file integrity; preservation of native metadata; traceability of curatorial provenance; and—crucially—the restitution of multiple contexts, both vertical hierarchical relationships within the folder structure, and horizontal connections across different entities. This representational density is what makes semantic richness possible, but it's also what makes navigation so challenging.">
+  <h3>Semantic Modeling</h3>
+  <h2>BoDi Ontology &amp; Knowledge Graph</h2>
+  <div class="cols">
+    <div class="col">
+      <div class="flow">
+        <div class="flow-item"><strong style="color:#3b82f6;">RiC-O</strong><br><span class="small">Records in Contexts Ontology</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item"><strong style="color:#f59e0b;">BoDi</strong><br><span class="small">Born-Digital extension</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item"><strong style="color:#10b981;">6M+ triples</strong><br><span class="small">Knowledge Graph</span></div>
+      </div>
+      <p style="margin-top:16px;">BoDi extends the archival standard RiC-O to address specific requirements of <strong style="color:#f59e0b;">born-digital materials</strong></p>
+      <div style="margin-top:16px;">
+        <span class="tag blue">RDF</span>
+        <span class="tag amber">SPARQL</span>
+        <span class="tag green">OWL</span>
+        <span class="tag blue">RiC-O</span>
+        <span class="tag amber">BoDi</span>
+      </div>
+    </div>
+    <div class="col">
+      <p style="font-size:0.9em;color:#64748b;margin-bottom:10px;">Five conceptual requirements:</p>
+      <ul>
+        <li>Physical, logical &amp; content-based representation</li>
+        <li>File integrity documentation</li>
+        <li>Native metadata preservation</li>
+        <li>Processual &amp; curatorial provenance traceability</li>
+        <li><span class="accent">Multiple contexts</span>: vertical hierarchy + horizontal semantic connections</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5: ResearchSpace Platform -->
+<div class="slide" data-notes="The platform we use is ResearchSpace, an open-source environment for managing and exploring cultural heritage knowledge graphs. It was developed at the British Museum with support from the Mellon Foundation and is now maintained by Kartography CIC. ResearchSpace is built on Semantic Web technologies—RDF for data, SPARQL for queries—and offers a modular, template-based architecture. Each module can be configured with custom SPARQL queries and presentation logic. Key modules include Semantic Search, Knowledge Patterns, Knowledge Maps for network visualization, image annotation tools, semantic narratives, and more. Importantly, ResearchSpace was designed and tested primarily with CIDOC CRM as its ontological framework—the museum-oriented standard. Our project represents one of the first implementations using an archival ontology, specifically BoDi extending RiC-O, which allowed us to test the platform's flexibility beyond its original museum-oriented scope.">
+  <h3>Platform</h3>
+  <h2>ResearchSpace</h2>
+  <div class="cols">
+    <div class="col">
+      <p style="margin-bottom:16px;">Open-source platform for cultural heritage knowledge graphs</p>
+      <ul>
+        <li>Developed at the <strong style="color:#cbd5e1;">British Museum</strong> (Mellon Foundation)</li>
+        <li>Maintained by <strong style="color:#cbd5e1;">Kartography CIC</strong> since 2023</li>
+        <li>RDF data model + SPARQL query engine</li>
+        <li>Modular, template-based architecture</li>
+      </ul>
+      <div class="highlight" style="margin-top:16px;">
+        <strong style="color:#f59e0b;">Our contribution:</strong> First ResearchSpace implementation based on an <em>archival</em> ontology (BoDi/RiC-O) instead of CIDOC CRM
+      </div>
+    </div>
+    <div class="col">
+      <p style="font-size:0.9em;color:#64748b;margin-bottom:10px;">Key modules:</p>
+      <div class="card" style="padding:16px;">
+        <p style="font-size:0.88em;line-height:1.8;">
+          <span class="tag blue">Semantic Search</span>
+          <span class="tag amber">Knowledge Patterns</span>
+          <span class="tag green">Knowledge Maps</span>
+          <span class="tag blue">Image Viewer</span>
+          <span class="tag amber">Semantic Narratives</span>
+          <span class="tag green">Timelines</span>
+          <span class="tag blue">Geo Integration</span>
+          <span class="tag amber">Semantic Tree</span>
+        </p>
+      </div>
+      <p style="font-size:0.88em;color:#94a3b8;margin-top:12px;">Adopted by: LINCS, Pharos, Amara West, British Museum, National Archives UK, Late Hokusai, Sphaera, VeNiss, RePIM…</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: Standard Semantic Tree Limitations -->
+<div class="slide" data-notes="Within ResearchSpace, the standard Semantic Tree module is the predefined tool for representing hierarchical relationships among RDF entities. It works with SPARQL queries that retrieve resources and their relationships, building a tree where nodes are entities and branches represent dependency relationships. The problem is that it uses a synchronous, monolithic approach: a single initial query retrieves the ENTIRE relationship graph at once. For small datasets—hundreds or even a few thousand triples—this works fine. But for the Evangelisti archive, with its file system reaching 18 hierarchical levels and encompassing thousands of entities across 6 million triples, this strategy proved computationally untenable. Initial loading times became prohibitive, memory consumption exceeded reasonable thresholds, and system responsiveness deteriorated significantly. Moreover, the standard tree only supports vertical navigation—you can go up and down the hierarchy, but you cannot explore the horizontal semantic connections that make archival materials rich and interesting.">
+  <h3>Limitation</h3>
+  <h2>The Standard Semantic Tree Problem</h2>
+  <div class="cols">
+    <div class="col">
+      <div class="card">
+        <h4>⚙️ How It Works</h4>
+        <p>Single SPARQL query retrieves the <strong style="color:#ef4444;">entire</strong> relationship graph at initialization</p>
+      </div>
+      <div style="margin:20px 0;">
+        <p style="font-size:0.9em;color:#64748b;margin-bottom:8px;">Works for:</p>
+        <div class="flow">
+          <div class="flow-item" style="border-color:rgba(16,185,129,0.3);"><span class="green">✓</span> Small datasets</div>
+          <div class="flow-item" style="border-color:rgba(16,185,129,0.3);"><span class="green">✓</span> Few hundred nodes</div>
+        </div>
+        <p style="font-size:0.9em;color:#64748b;margin-top:16px;margin-bottom:8px;">Fails for:</p>
+        <div class="flow">
+          <div class="flow-item" style="border-color:rgba(239,68,68,0.3);"><span style="color:#ef4444;">✗</span> 6M triples</div>
+          <div class="flow-item" style="border-color:rgba(239,68,68,0.3);"><span style="color:#ef4444;">✗</span> 18 levels deep</div>
+          <div class="flow-item" style="border-color:rgba(239,68,68,0.3);"><span style="color:#ef4444;">✗</span> 1000s of entities</div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card" style="border-color:rgba(239,68,68,0.3);">
+        <h4 style="color:#ef4444;">⚠️ Critical Issues at Scale</h4>
+        <p>Prohibitive initial loading times</p>
+        <p>Memory consumption exceeds thresholds</p>
+        <p>System responsiveness deteriorates</p>
+        <p style="margin-top:8px;"><strong style="color:#ef4444;">Navigation is strictly vertical</strong> — no horizontal semantic exploration</p>
+      </div>
+      <div class="highlight" style="margin-top:16px;">
+        <strong style="color:#f59e0b;">Key insight:</strong> We need a fundamentally different architecture — not just optimization, but a paradigm shift in how data is loaded and navigated
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: Semantic Tree Advanced Architecture -->
+<div class="slide" data-notes="To solve these problems, we developed the Semantic Tree Advanced. The core innovation is progressive and contextual data loading through dynamic SPARQL query generation. Instead of retrieving everything upfront, only the root nodes and first descendant level are loaded at initialization. When a user expands a node, the system dynamically generates and executes a targeted SPARQL query to retrieve specifically that node's children. Each subtree is generated exclusively in response to user interaction. This fundamentally transforms the performance profile: initial load times become constant regardless of dataset size—about 129 milliseconds on average. Memory consumption remains bounded. And node expansion takes roughly 57 milliseconds regardless of depth—so expanding a node near the root costs the same as expanding one buried 18 levels deep. The architecture also implements persistent state management, maintaining node expansion status across filtering and search operations without requiring tree reconstruction.">
+  <h3>Our Solution</h3>
+  <h2>Semantic Tree Advanced</h2>
+  <div class="cols">
+    <div class="col">
+      <p style="margin-bottom:20px;"><strong style="color:#f59e0b;">Core innovation:</strong> Progressive data loading via dynamic SPARQL query generation</p>
+      <div class="tree-demo">
+        <div class="node active">📁 Born-Digital Materials ▾</div>
+        <div class="node" style="padding-left:30px;">📁 Main Computer ▾</div>
+        <div class="node highlight-node" style="padding-left:60px;">📁 Documents ▸ <span class="small" style="color:#f59e0b;">← loaded on click</span></div>
+        <div class="node" style="padding-left:60px;opacity:0.4;">📁 Emails ▸</div>
+        <div class="node" style="padding-left:60px;opacity:0.4;">📁 Software ▸</div>
+        <div class="node" style="padding-left:30px;opacity:0.5;">📁 External HDD ▸</div>
+        <div class="node" style="padding-left:30px;opacity:0.5;">📁 Floppy Disks ▸</div>
+      </div>
+      <p class="small" style="margin-top:12px;">Only visible nodes are queried — subtrees load on demand</p>
+    </div>
+    <div class="col">
+      <p style="font-size:0.9em;color:#64748b;margin-bottom:12px;">Four architectural objectives:</p>
+      <div class="card" style="padding:16px;">
+        <h4>1. Progressive Loading</h4>
+        <p>Root + first level at init; children loaded per interaction</p>
+      </div>
+      <div class="card" style="padding:16px;">
+        <h4>2. Semantic Precision</h4>
+        <p>Targeted SPARQL queries reduce overhead while maintaining accuracy</p>
+      </div>
+      <div class="card" style="padding:16px;">
+        <h4>3. Persistent State</h4>
+        <p>Node expansion status preserved across filters &amp; searches</p>
+      </div>
+      <div class="card" style="padding:16px;">
+        <h4>4. Transversal Relationships</h4>
+        <p>Horizontal navigation beyond parent-child hierarchy</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: Contextual Search -->
+<div class="slide" data-notes="A key feature of the Semantic Tree Advanced is its integrated contextual search. Unlike traditional search systems—both archival and general-purpose—which return flat result lists separated from their structural context, our search filters and reorganizes the hierarchy itself. When a user enters a search term, the system constructs a SPARQL query that identifies matching nodes, retrieves the complete hierarchical path from root to each match, and reconstructs the tree displaying only the relevant branches while preserving structural context. Results are highlighted directly within the original hierarchy. This is crucial for archival work: users can simultaneously identify relevant materials and understand their provenance relationships and position within the collection. They can immediately see whether a match is an isolated document or part of a larger documentary cluster, without having to mentally reconstruct archival relationships. We call this 'pruning' the tree to focus on results while compressing sibling nodes.">
+  <h3>Navigation Feature</h3>
+  <h2>Contextual Search</h2>
+  <div class="cols">
+    <div class="col">
+      <div class="card" style="border-color:rgba(239,68,68,0.2);margin-bottom:16px;">
+        <h4 style="color:#ef4444;">❌ Traditional Search</h4>
+        <p>Returns flat result lists — <strong>no structural context</strong><br>User must mentally reconstruct archival relationships</p>
+      </div>
+      <div class="card" style="border-color:rgba(16,185,129,0.3);">
+        <h4 style="color:#10b981;">✓ Our Contextual Search</h4>
+        <p>Filters &amp; reorganizes the <strong>hierarchy itself</strong><br>Results shown within their archival position — the tree is "pruned" to focus on matches</p>
+      </div>
+    </div>
+    <div class="col">
+      <p style="font-size:0.9em;color:#64748b;margin-bottom:10px;">How it works:</p>
+      <div class="flow" style="flex-direction:column;align-items:flex-start;">
+        <div class="flow-item" style="width:100%;">🔍 User enters search term</div>
+        <div class="flow-arrow" style="transform:rotate(90deg);margin:4px 0 4px 20px;">→</div>
+        <div class="flow-item" style="width:100%;">⚡ SPARQL identifies matching nodes</div>
+        <div class="flow-arrow" style="transform:rotate(90deg);margin:4px 0 4px 20px;">→</div>
+        <div class="flow-item" style="width:100%;">🌳 Retrieves full path root → match</div>
+        <div class="flow-arrow" style="transform:rotate(90deg);margin:4px 0 4px 20px;">→</div>
+        <div class="flow-item" style="width:100%;border-color:rgba(245,158,11,0.3);">✨ Tree rebuilt with only relevant branches</div>
+      </div>
+      <p class="small" style="margin-top:12px;">+ Reversible filters · Dynamic sorting · Query-level exclusion</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDES 9-13 PLACEHOLDER -->
+
+</div>
+
+<div class="nav">
+  <span class="counter" id="counter">1 / 13</span>
+  <button onclick="prevSlide()">‹</button>
+  <button onclick="nextSlide()">›</button>
+</div>
+
+<div class="notes-panel" id="notes"></div>
+
+<script>
+const notes = {};
+let current = 0;
+let totalSlides = 0;
+let notesVisible = false;
+
+function init() {
+  totalSlides = document.querySelectorAll('.slide').length;
+  showSlide(0);
+}
+
+function showSlide(n) {
+  const slides = document.querySelectorAll('.slide');
+  if (n < 0 || n >= slides.length) return;
+  slides[current].classList.remove('active');
+  current = n;
+  slides[current].classList.add('active');
+  document.getElementById('counter').textContent = (current+1) + ' / ' + totalSlides;
+  document.getElementById('progress').style.width = ((current+1)/totalSlides*100) + '%';
+  const noteEl = document.getElementById('notes');
+  const slideNotes = slides[current].getAttribute('data-notes');
+  if (slideNotes) {
+    noteEl.innerHTML = '<div class="notes-label">Speaker Notes</div>' + slideNotes;
+  } else {
+    noteEl.innerHTML = '<div class="notes-label">Speaker Notes</div><em>No notes for this slide.</em>';
+  }
+}
+
+function nextSlide() { showSlide(current + 1); }
+function prevSlide() { showSlide(current - 1); }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+  else if (e.key === 'n' || e.key === 'N') {
+    notesVisible = !notesVisible;
+    document.getElementById('notes').classList.toggle('visible', notesVisible);
+  }
+});
+
+window.addEventListener('load', init);
+</script>
+</body>
+</html>

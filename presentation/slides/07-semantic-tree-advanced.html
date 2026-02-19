@@ -1,0 +1,37 @@
+<section>
+  <h3>Our Solution</h3>
+  <h2>Semantic Tree Advanced</h2>
+
+  <div class="cols">
+    <div>
+      <p style="margin-bottom:14px;font-size:0.82em;">
+        <strong class="accent">Core innovation:</strong> Progressive data loading via dynamic SPARQL query generation
+      </p>
+
+      <div class="card" style="padding:14px 18px;">
+        <h4>1. Progressive Loading</h4>
+        <p>Root + first level at init; children loaded per user interaction</p>
+      </div>
+      <div class="card" style="padding:14px 18px;">
+        <h4>2. Semantic Precision</h4>
+        <p>Targeted SPARQL queries reduce overhead while maintaining accuracy</p>
+      </div>
+      <div class="card" style="padding:14px 18px;">
+        <h4>3. Persistent State</h4>
+        <p>Node expansion status preserved across filters &amp; searches</p>
+      </div>
+      <div class="card" style="padding:14px 18px;">
+        <h4>4. Transversal Relationships</h4>
+        <p>Horizontal navigation beyond parent-child hierarchy</p>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+      <img src="slides/semantictreeadvanced_screenshot.png" alt="Semantic Tree Advanced — Evangelisti Archive interface" style="max-width:100%;max-height:520px;border-radius:8px;border:1px solid var(--border-subtle);box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+      <p class="small" style="margin-top:8px;text-align:center;">The Semantic Tree Advanced component in the Evangelisti Archive project</p>
+    </div>
+  </div>
+
+  <aside class="notes">
+    To solve these problems, we developed the Semantic Tree Advanced. The core innovation is progressive and contextual data loading through dynamic SPARQL query generation. Instead of retrieving everything upfront, only the root nodes and first descendant level are loaded at initialization. When a user expands a node, the system dynamically generates a targeted SPARQL query to retrieve specifically that node's children. Each subtree is generated exclusively in response to user interaction. This fundamentally transforms the performance profile: initial load times become constant—about 129 milliseconds. Memory consumption remains bounded. And node expansion takes roughly 57 milliseconds regardless of depth. As you can see in the screenshot, results are shown in their archival context — the tree is "pruned" to focus on matches, with the metadata panel on the right showing rich information for the selected resource.
+  </aside>
+</section>
